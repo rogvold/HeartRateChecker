@@ -21,27 +21,13 @@
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <!--<script src="js/ccv.js"></script>-->
-    <script src="js/tracking.js"></script>
-    <script src="js/face.js"></script>
-    <script src="js/eye.js"></script>
-    <script src="js/mouth.js"></script>
-
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
-
-    <![endif]-->
+    <script src="js/tracking-min.js"></script>
+    <script src="js/face-min.js"></script>
+    <script src="js/eye-min.js"></script>
 
 </head>
 
 <body>
-
 
     <!-- Header -->
     <header id="top" class="header">
@@ -64,8 +50,9 @@
                     <h2>Don't move!</h2>
             </div>
 
-            <video width="600" height="400" autoplay="autoplay" hidden="true" id="myVideo"></video>
-            <canvas id="output"  height="200" width="300" ></canvas>
+            <video id="video" width="320" height="240" autoplay="autoplay"></video>
+            <canvas id="canvas" width="320" height="240"></canvas>
+
             <div class="col-md-12">Graph</div>
 
         </div>
