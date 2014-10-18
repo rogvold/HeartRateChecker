@@ -21,9 +21,22 @@
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <script src="js/tracking-min.js"></script>
-    <script src="js/face-min.js"></script>
-    <script src="js/eye-min.js"></script>
+    <!--<script src="js/tracking-min.js"></script>-->
+    <!--<script src="js/face-min.js"></script>-->
+    <!--<script src="js/eye-min.js"></script>-->
+
+    <!--<style type="text/css">-->
+        <!--#video{-->
+            <!--position: absolute;-->
+                <!--left: -10000000;-->
+                <!--top: -10000000;-->
+        <!--}-->
+    <!--</style>-->
+
+
+    <script type="text/javascript" src="js/canvasjs.min.js"></script>
+    <script src="js/fft.js"></script>
+
 
 </head>
 
@@ -50,10 +63,15 @@
                     <h2>Don't move!</h2>
             </div>
 
-            <video id="video" width="320" height="240" autoplay="autoplay"></video>
-            <canvas id="canvas" width="320" height="240"></canvas>
+            <div style="display: inline-block; width: 320px; height: 240px; position: relative">
+                <video id="video" width="320" height="240" autoplay="autoplay" style="display: block"></video>
+                <div style="display: block; border: 1px solid green; background-color: lightgreen; position: absolute; width: 40px; height: 20px; top: 80px; left: 140px; z-index: 1000000; opacity: 0.5"></div>
+            </div>
 
-            <div class="col-md-12">Graph</div>
+            <canvas id="canvas" width="320" height="240" style="display: inline-block; border: 1px solid #000000"></canvas>
+
+            <div id="chart" style="height: 300px; width: 80%"></div>
+            <div id="fft_chart" style="height: 300px; width: 80%"></div>
 
         </div>
 
