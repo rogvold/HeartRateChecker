@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script type="text/javascript">
+
+        var LineChart = function() {
+            var self = this;
+            this.divId = '';
+            this.title = '';
+            this.type = "line";
+            this.data = [{x: 100, y: 100}, {x:300, y: 100}];
+
+            this.options = {
+                title: {
+                    text: self.title
+                },
+                data: [{
+                    type: self.type,
+                    dataPoints: self.data
+                }],
+                axisY: {
+                    includeZero: false
+                }
+            };
+
+            this.init = function(divId, title) {
+                self.divId = divId;
+                self.title = title;
+                self.options.title.text = title;
+                console.log(self.options.data.dataPoints);
+                self.plot = new CanvasJS.Chart(self.divId, self.options);
+                self.plot.render();
+                console.log(self.plot);
+
+            };
+
+            this.render = function() {
+//                self.options.data.dataPoints = self.data;
+                self.plot.render();
+            };
+
+            this.push = function(xVal, yVal) {
+                self.data.push({
+                    x: xVal,
+                    y: yVal
+                });
+            };
+
+        }
+
+        window.onload = function () {
+
+
+            var chart = new LineChart();
+
+            chart.init("chartContainer", "smth");
+
+//            chart.push(50, 100);
+//            chart.render();
+
+
+
+//            var chart = new CanvasJS.Chart("chartContainer",{
+//                title :{
+//                    text: "Live Random Data"
+//                },
+//                data: [{
+//                    type: "line",
+//                    dataPoints: dps
+//                }]
+//            });
+
+//            var xVal = 0;
+//            var yVal = 100;
+//            var updateInterval = 20;
+//            var dataLength = 500; // number of dataPoints visible at any point
+//
+//            var updateChart = function (count) {
+//                count = count || 1;
+//                // count is number of times loop runs to generate random dataPoints.
+//
+//                for (var j = 0; j < count; j++) {
+//                    yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+//                    chart.push(xVal,yVal);
+////                    dps.push({
+////                        x: xVal,
+////                        y: yVal
+////                    });
+//                    xVal++;
+//                };
+//                if (chart.data.length > dataLength)
+//                {
+//                    chart.data.shift();
+//                }
+//
+//                chart.render();
+//
+//            };
+//
+//            // generates first set of dataPoints
+//            updateChart(dataLength);
+//
+//            // update chart after specified time.
+//            setInterval(function(){updateChart()}, updateInterval);
+//
+        }
+    </script>
+    <script type="text/javascript" src="js/canvasjs.min.js"></script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width:100%;">
+</div>
+</body>
+</html>

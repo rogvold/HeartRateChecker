@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Ivan Koval">
+
 
     <title>Check out your heart rate</title>
 
@@ -25,22 +26,22 @@
     <!--<script src="js/face-min.js"></script>-->
     <!--<script src="js/eye-min.js"></script>-->
 
-    <!--<style type="text/css">-->
-        <!--#video{-->
-            <!--position: absolute;-->
-                <!--left: -10000000;-->
-                <!--top: -10000000;-->
-        <!--}-->
-    <!--</style>-->
-
-
     <script type="text/javascript" src="js/canvasjs.min.js"></script>
     <script src="js/fft.js"></script>
-
+    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
 
 </head>
 
 <body>
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     <!-- Header -->
     <header id="top" class="header">
@@ -50,31 +51,56 @@
                 right now!
             </h1>
             <br>
-            <a href="#webcam" class="btn btn-dark btn-lg" id="checkButton" >Check it!</a>
+            <a href="#webcam" class="btn btn-dark btn-lg" id="check_button" >Check it!</a>
         </div>
     </header>
 
     <!-- Webcam -->
     <section id="webcam" class="about">
-
         <div class="container text-center">
-
-            <div class="col-md-12">
-                    <h2>Don't move!</h2>
+            <!--Buttons-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <select id="precision_select" class="dropdown btn btn-default">
+                            <option value="256">256</option>
+                            <option value="512">512</option>
+                            <option value="1024">1024</option>
+                            <option value="2048">2048</option>
+                        </select>
+                        <button id="apply_button" type="button" class="btn btn-default">Apply!</button>
+                        <button id="photo_button" type="button" class="btn btn-default">Take photo!</button>
+                    </div>
+                </div>
             </div>
 
-            <div style="display: inline-block; width: 320px; height: 240px; position: relative">
-                <video id="video" width="320" height="240" autoplay="autoplay" style="display: block"></video>
-                <div style="display: block; border: 1px solid green; background-color: lightgreen; position: absolute; width: 40px; height: 20px; top: 80px; left: 140px; z-index: 1000000; opacity: 0.5"></div>
+            <div class="row">
+
+                <!--Canvas-->
+                <div class="col-md-6">
+
+                    <!--Video-->
+                    <video id="video" width="320" height="240"  autoplay="autoplay" style="display: block; width: 320px; height: 240px"></video>
+
+                    <!--rectangular-->
+                    <div style="border: 1px dashed green; background-color: #4cae4c; position: absolute; width: 40px; height: 20px; top: 80px; left: 270px; opacity: 0.5; z-index: 10"></div>
+
+                    <!--Canvas to photo-->
+                    <canvas id="sent_canvas" width="320" height="240" style="display: block; width: 320px; height: 240px"></canvas>
+
+                    <!--Canvas to data-->
+                    <canvas id="forehead_canvas" width="320" height="240" style="display: block; width: 320px; height: 240px"></canvas>
+
+                </div>
+
+                <!--Charts-->
+                <div class="col-md-6">
+                    <div id="green_chart" style="display: block; height: 300px"></div>
+                    <div id="fft_chart" style="display: block; height: 300px"></div>
+                </div>
+
             </div>
-
-            <canvas id="canvas" width="320" height="240" style="display: inline-block; border: 1px solid #000000"></canvas>
-
-            <div id="chart" style="height: 300px; width: 80%"></div>
-            <div id="fft_chart" style="height: 300px; width: 80%"></div>
-
         </div>
-
     </section>
 
     <!-- Results -->
@@ -84,24 +110,35 @@
                 <div class="col-lg-10 col-lg-offset-1 text-center">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="img/portfolio-1.jpg">
-                                </a>
-                            </div>
+                            <h2>Your heart rate is ...</h2>
+
+                            <canvas id="result_canvas" width="320" height="240" style="position: fixed; left: -10000px"></canvas>
+
+                            <div id="share_img"> </div>
+
+                            <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
+                            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTitle="My heart rate is 60 bpm"></div>
+
+
+                            <a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=heartrate.cardiomood.com/share.php?id=sgsfsgs&amp;bpm=50">Share</a>
+
+                            <div id="share_fb"> </div>
+
+                           <!--<div id="vk_share_button" style="display: block;"> </div>-->
+
+                            <!--<div class="fb-share-button"></div>-->
+
+                            <!--<a class="twitter-share-button" data-size="large" data-count="none">Tweet</a>-->
+                            <!--<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>-->
+
+
+                            <hr class="small">
+                            <a href="#webcam" class="btn btn-dark">Check again!</a>
                         </div>
                     </div>
-
-                    <h2>Your heart rate is ...</h2>
-                    <hr class="small">
-                    <!-- /.row (nested) -->
-                    <a href="#webcam" class="btn btn-dark">Check again!</a>
                 </div>
-                <!-- /.col-lg-10 -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container -->
     </section>
 
     <!-- Footer -->
