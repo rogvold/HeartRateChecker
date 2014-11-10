@@ -1,34 +1,20 @@
-<?php
-
-
-echo '
-
 <!DOCTYPE html>
 <html>
 <head lang="en">
-
     <meta property="og:title" content="Check out your heart rate!" />
 
+    <meta property="og:image"
+          content="http://heartrate.cardiomood.com/" />
 
     <meta property="og:description"
-          content="My heart rate is' . htmlspecialchars($_GET["bpm"]). '67 bpm" />
-
-    <meta property="og:image"
-          content="http://heartrate.cardiomood.com/'.  htmlspecialchars($_GET["id"]). '544e7c216a756.png" />
-
+          content="My heart rate is ' . $bpm . ' bpm" />
 
     <title>Heart Rate Checker</title>
 </head>
 <body>
-
-<img src="http://heartrate.cardiomood.com/images/544e7c216a756.png" />
+<img src="http://heartrate.cardiomood.com/' . $img . '" />
 <br/>
 <a href="/index.html" >Check out your heart
     rate now!</a>
-
 </body>
 </html>
-
-
-
-?>

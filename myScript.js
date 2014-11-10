@@ -1,7 +1,5 @@
 segm = 512;
 
-//var chart = function()
-
 var LineChart = function() {
     var self = this;
     this.divId = '';
@@ -64,20 +62,34 @@ var Photo = function(rate) {
             img.src = 'http://heartrate.cardiomood.com/' + o;
             $('#share_img').prepend('<img src="' + img.src + '" />');
 
+            ref_fb = "http://www.facebook.com/sharer/sharer.php?u=heartrate.cardiomood.com/share.php?id="+ o + "_" + rate;
+            ref_vk = "http://vk.com/share.php?url=http://heartrate.cardiomood.com/share.php?id="+ o + "_" + rate;
+            ref_tw = "https://twitter.com/intent/tweet?url=http://heartrate.cardiomood.com/share.php?id="+ o + "_" + rate;
+
+            $('#iframe').attr('src', ref_fb);
+
+            setTimeout(function() {
+
+                $('#share_fb').append('<img src="img/image_fb.png" />');
+                setTimeout(function() {
+                    $('#share_fb').click(function() {
+                        window.open(ref_fb, 'facebook_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no')
+                    });
+                }, 1000)
+
+                $('#share_vk').append('<img src="img/image_vk.png" />');
+                $('#share_vk').click(function() {
+                    window.open(ref_vk, 'facebook_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no')
+                });
 
 
-            ref = "http://www.facebook.com/sharer/sharer.php?u=heartrate.cardiomood.com/share.php?id="+ o + "&amp;bpm=" + rate;
-            $('#share_fb').append('<a target="_blank"' + 'href=' + ref + '>Share</a>');
+                $('#share_tw').append('<img src="img/image_tw.png" />');
+                $('#share_tw').click(function() {
+                    window.open(ref_tw, 'facebook_share', 'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no')
+                });
 
-            console.log(ref);
+            }, 5000);
 
-            $('#share_fb').attr('href', ref);
-
-
-            $('.fb-share-button').attr('data-href', img.src);
-            $('.twitter-share-button').attr('href', img.src);
-            document.getElementById('vk_share_button').innerHTML = VK.Share.button(img.src, {type: 'link'});
-            console.log(img);
         });
         flag_p = true;
     }
@@ -177,7 +189,7 @@ var check = function() {
 
                     xVal++;
 
-                    var rate = 50;
+                    var rate = 57;
                     $('#photo_button').bind('click', function(){Photo(rate)});
 
                     result_context.drawImage(img, 0, 0, 320, 240);
