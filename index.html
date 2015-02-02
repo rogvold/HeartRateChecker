@@ -2,35 +2,36 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="With a help of your webcam you can check your heart rate just in some seconds! Check it out!">
     <meta name="author" content="Ivan Koval">
-
+    <meta property="og:image" content="http://heartrate.cardiomood.com/img/icon.png">
 
     <title>Check out your heart rate</title>
+    <link rel="icon"
+          type="image/png"
+          href="img/icon.png">
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.css" rel="stylesheet">
-
+    <link href="css/agency.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
+    <link rel="image_src" href="http://heartrate.cardiomood.com/img/icon.png" />
 
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <!--<script src="js/tracking-min.js"></script>-->
-    <!--<script src="js/face-min.js"></script>-->
-    <!--<script src="js/eye-min.js"></script>-->
-
+    <!--JS Files-->
     <script type="text/javascript" src="js/canvasjs.min.js"></script>
     <script src="js/fft.js"></script>
-    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
+    <script src="js/dsp.js"></script>
+    <script src="js/parse.min.js"></script>
 
 </head>
 
@@ -38,58 +39,58 @@
 
 <!-- Header -->
 <header id="top" class="header">
+    <div style="position: absolute; right: 10px">
+        <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter"
+             data-yashareDescription="With a help of your webcam you can check your heart rate just in some seconds! Check it out!" data-yashareImage="http://heartrate.cardiomood.com/img/icon.png"></div>
+    </div>
     <div class="text-vertical-center">
-        <h1>Check out your
-            <span style="color: firebrick;">heart rate </span>
-            right now!
+        <h1 class="translatable" style="color: #D3D3D3" data-trRu = 'Узнай свой <span style="color: firebrick;"> пульс </span> <br> используя вебкамеру!'>Check out your
+            <span style="color: firebrick;">heart rate </span> <br>
+            with your webcam!
         </h1>
-        <br>
-        <a href="#webcam" class="btn btn-dark btn-lg" id="check_button" >Check it!</a>
+        <a href="#webcam" class="btn btn-danger btn-lg translatable" id="check_button" style="margin-top: 150px" data-trRu = 'Узнать!'>Check it!</a>
+        <div id="allow"></div>
     </div>
 </header>
 
 <!-- Webcam -->
-<section id="webcam" class="about">
+<section id="webcam" class="about" style="display: none; margin-top: -50px">
     <div class="container text-center">
-        <!--Buttons-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group">
-                    <select id="precision_select" class="dropdown btn btn-default">
-                        <option value="256">256</option>
-                        <option value="512">512</option>
-                        <option value="1024">1024</option>
-                        <option value="2048">2048</option>
-                    </select>
-                    <button id="apply_button" type="button" class="btn btn-default">Apply!</button>
-                    <button id="photo_button" type="button" class="btn btn-default">Take photo!</button>
-                </div>
-            </div>
-        </div>
-
         <div class="row">
 
             <!--Canvas-->
-            <div class="col-md-6">
+            <div class="col-md-7">
+                <!--Video with rectangular-->
+                <!--Get results-->
+                <a id="ready_button" type="button" class="btn btn-success translatable" data-trRu = 'Проверить'>Ready</a>
 
-                <!--Video-->
-                <video id="video" width="320" height="240"  autoplay="autoplay" style="display: block; width: 320px; height: 240px"></video>
 
-                <!--rectangular-->
-                <div style="border: 1px dashed green; background-color: #4cae4c; position: absolute; width: 40px; height: 20px; top: 80px; left: 270px; opacity: 0.5; z-index: 10"></div>
-
+                <div id="vr">
+                    <video id="video" width="480" height="360" autoplay="autoplay"></video>
+                    <div id="rect"></div>
+                </div>
                 <!--Canvas to photo-->
-                <canvas id="sent_canvas" width="320" height="240" style="display: block; width: 320px; height: 240px"></canvas>
-
+                <canvas id="sent_canvas" width="480" height="360" style="visibility: hidden"></canvas>
                 <!--Canvas to data-->
-                <canvas id="forehead_canvas" width="320" height="240" style="display: block; width: 320px; height: 240px"></canvas>
+                <canvas id="forehead_canvas" width="60" height="30" style="visibility: hidden"></canvas>
+
+                <div id="myCountDown"></div>
 
             </div>
 
             <!--Charts-->
-            <div class="col-md-6">
-                <div id="green_chart" style="display: block; height: 300px"></div>
-                <div id="fft_chart" style="display: block; height: 300px"></div>
+            <div class="col-md-5">
+                <img src="img/example.png" style="margin-top: 70px; width: 60% ">
+
+                <div class="translatable" style="margin-bottom: 20px; font-size: 18px" data-trRu = 'Поместите лоб в зеленый прямоугольник и нажмите "Проверить" <br><span style="color: firebrick"> Лицо должно занимать большую часть камеры </span> <br> Не двигайтесь в течении 25 секунд!'>Place your forehead in the green rectangular <br>
+                    and press "Ready" <br>
+                    <span style="color: firebrick">Your face should fill the most part of the picture</span><br>
+                    Don't move for 25 seconds! <br>
+
+                </div>
+
+                <div id="green_chart" style="display: block; height: 150px"></div>
+                <div id="fft_chart" style="display: block; height: 150px"></div>
             </div>
 
         </div>
@@ -97,25 +98,30 @@
 </section>
 
 <!-- Results -->
-<section id="Results" class="portfolio">
-    <div class="container">
+<section id="results" class="portfolio" style="display: none">
+<!--WTF row in row?-->
+    <div class="container" style="margin-top: 30px">
         <div class="row">
             <div class="col-lg-10 col-lg-offset-1 text-center">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Your heart rate is ...</h2>
+                        <h2 id="heart_rate" class="translatable" data-trRu = "Ваш пульс ">Your heart rate is </h2>
 
-                        <canvas id="result_canvas" width="320" height="240" style="position: fixed; left: -10000px"></canvas>
+                        <div id="share_img" style="padding: 20px"> </div>
 
-                        <div id="share_img"> </div>
+                        <div id="spinner_share" style="display: block">
+                            <div class="fa fa-spinner fa-spin"></div>
+                        </div>
 
-                        <div style="display: inline"><a id="share_fb" class="share_button"></a></div>
-                        <div style="display: inline"><a id="share_vk" class="share_button"></a></div>
-                        <div style="display: inline"><a id="share_tw" class="share_button"></a></div>
+                        <canvas id="result_canvas" width="320" height="240" style="position: fixed; left: -100000px"></canvas>
+
+                        <div id="share_fb"></div>
+                        <div id="share_vk"></div>
+                        <div id="share_tw"></div>
 
                         <hr class="small">
-                        <a href="#webcam" class="btn btn-dark">Check again!</a>
-                        <iframe id="iframe"></iframe>
+                        <a href="#" id="again_button" class="btn btn-dark translatable" data-trRu="Проверить еще раз!">Check again!</a>
+                        <iframe id="iframe" style="position: fixed; left: -10000px"></iframe>
                     </div>
                 </div>
             </div>
@@ -123,37 +129,58 @@
     </div>
 </section>
 
-<!-- Footer -->
-<footer style="display: none">
+
+<section id="contact">
     <div class="container">
         <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 text-center">
-                <h4><strong>Start Bootstrap</strong>
-                </h4>
-                <p>3481 Melrose Place<br>Beverly Hills, CA 90210</p>
-                <ul class="list-unstyled">
-                    <li><i class="fa fa-phone fa-fw"></i> (123) 456-7890</li>
-                    <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:name@example.com">name@example.com</a>
-                    </li>
-                </ul>
-                <br>
-                <ul class="list-inline">
-                    <li>
-                        <a href="#"><i class="fa fa-facebook fa-fw fa-3x"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-dribbble fa-fw fa-3x"></i></a>
-                    </li>
-                </ul>
-                <hr class="small">
-                <p class="text-muted">Copyright &copy; Your Website 2014</p>
+            <div class="col-lg-12 text-center">
+                <h2 id="thank" class="section-heading translatable" data-trRu="Оставьте Ваш отзыв">Leave your feedback</h2>
+            </div>
+        </div>
+        <div id="feedback" class="row">
+            <div class="col-lg-12">
+                <div name="sentMessage" id="contactForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Your Email *" id="email" required data-validation-required-message="Please enter your email address.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12 text-center">
+                            <div id="success"></div>
+                            <button id="submitButton" type="submit" class="btn btn-xl translatable" data-trRu="Отправить отзыв">Send Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <i class="fa fa-envelope-o fa-fw"></i>
+                <a href="mailto:name@example.com" style="color: #337ab7">heartrate.cardiomood@gmail.com</a>
             </div>
         </div>
     </div>
 </footer>
+
+
+
+
 
 <!-- jQuery Version 1.11.0 -->
 <script src="js/jquery-1.11.0.js"></script>
@@ -163,6 +190,54 @@
 
 <script src="myScript.js"></script>
 
+
+<script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
+
+
 </body>
 
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter28193118 = new Ya.Metrika({id:28193118,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/28193118" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-59250700-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
 </html>
+
+
+

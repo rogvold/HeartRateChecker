@@ -1,8 +1,59 @@
+#allow{
+    color: coral;
+    font-size: 35px;
+    margin-top: 130px;
+}
+
 .share_button{
     cursor: pointer;
-
+    display: inline;
+    padding: 10px;
+    font-size: 20px
 }
 
 .share_button:hover{
     opacity: 0.7;
+}
+
+#video {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    display: block;
+    margin: 1%;
+}
+
+#rect {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    margin-left: -30px;
+
+    width: 60px;
+    height: 30px;
+    border: 1px solid firebrick;
+    background-color: #4cae4c;
+    opacity: 0.5;
+    z-index: 10
+}
+
+#vr {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    margin-left: -240px;
+}
+
+#ready_button {
+    position: absolute;
+    top: 500px;
+    left: 45%;
+    margin-bottom: 70px
+}
+
+#myCountDown {
+    position: absolute;
+    top: 500px;
+    left: 45%;
+    margin-bottom: 70px
 }

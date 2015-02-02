@@ -2,7 +2,7 @@
  * Created by IvanK on 10/14/2014.
  */
 
-var FFT = (function() {
+var FFT_one = (function() {
     "use strict";
 
     var FFT = function() {

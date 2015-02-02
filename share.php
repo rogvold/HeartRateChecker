@@ -24,12 +24,17 @@ echo '
 
 <header id="top" class="header">
     <div class="text-vertical-center">
-        <h1> My heart rate is '. $bpm .' bmp. <br> And your? </h1>
-        <h2><a href="index.html#webcam" class="btn btn-dark btn-lg" id="check_button" >Check it!</a></h2>
         <img style="display:inline; padding: 50px" src="http://heartrate.cardiomood.com/' . $img . '" />
+        <h1 style="color: white"> My heart rate is <span style="color: firebrick">'. $bpm .' </span> bmp. <br> And yours? </h1>
+        <h2 style="color: white"><a href="index.html#webcam" class="btn btn-dark btn-lg" id="check_button" >Check it!</a></h2>
     </div>
 </header>
 
 </body>
-</html>'
+</html>
+
+
+
+
+'
 ?>
